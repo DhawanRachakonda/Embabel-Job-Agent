@@ -52,5 +52,6 @@ These run the real Embabel platform and planner with the LLM mocked (Embabel's `
 
 ## Notes
 
+- Jobs are stored in MongoDB database `jd_intake_db`, collection `jobs_embabel` (override with `MONGO_DB` and `MONGO_COLLECTION`). Each sibling app uses its own collection, and the Python original uses `jobs`, so several apps can share one cluster without the duplicate check (same title and company) seeing each other's jobs.
 - Users are told apart only by `thread_id` (the Embabel process id), which the React app keeps in memory and sends back with each answer. There is no login.
 - Embabel's `MONGO_URI` bean is created only when `MONGO_URI` is set.
