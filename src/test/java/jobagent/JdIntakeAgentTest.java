@@ -45,7 +45,7 @@ class JdIntakeAgentTest extends EmbabelMockitoIntegrationTest {
 
     @Test
     void completeJdIsPublished() {
-        whenCreateObject(p -> p.contains("Extract these fields"), ExtractedFields.class)
+        whenCreateObject(p -> p.contains("Extract the job posting details"), ExtractedFields.class)
                 .thenReturn(job("Backend Engineer", "Acme"));
         llmScores(90);
 
@@ -58,7 +58,7 @@ class JdIntakeAgentTest extends EmbabelMockitoIntegrationTest {
 
     @Test
     void duplicateIsRejected() {
-        whenCreateObject(p -> p.contains("Extract these fields"), ExtractedFields.class)
+        whenCreateObject(p -> p.contains("Extract the job posting details"), ExtractedFields.class)
                 .thenReturn(job("Dup Title", "DupCo"));
         llmScores(90);
 
@@ -68,7 +68,7 @@ class JdIntakeAgentTest extends EmbabelMockitoIntegrationTest {
 
     @Test
     void missingFieldsPauseForTheRecruiterThenContinue() {
-        whenCreateObject(p -> p.contains("Extract these fields"), ExtractedFields.class).thenReturn(
+        whenCreateObject(p -> p.contains("Extract the job posting details"), ExtractedFields.class).thenReturn(
                 new ExtractedFields("QA Engineer", "Initech", "", "", ""));
         llmScores(90);
 
@@ -88,7 +88,7 @@ class JdIntakeAgentTest extends EmbabelMockitoIntegrationTest {
 
     @Test
     void poorQualityRewritesTwiceThenEscalates() {
-        whenCreateObject(p -> p.contains("Extract these fields"), ExtractedFields.class).thenReturn(job("Vague Role", "Hooli"));
+        whenCreateObject(p -> p.contains("Extract the job posting details"), ExtractedFields.class).thenReturn(job("Vague Role", "Hooli"));
         llmScores(40);
         whenGenerateText(p -> p.contains("Rewrite this job")).thenReturn("A clearer rewritten posting.");
 
@@ -101,7 +101,7 @@ class JdIntakeAgentTest extends EmbabelMockitoIntegrationTest {
     @Test
     @SuppressWarnings("unchecked")
     void chatEndpointContract() {
-        whenCreateObject(p -> p.contains("Extract these fields"), ExtractedFields.class)
+        whenCreateObject(p -> p.contains("Extract the job posting details"), ExtractedFields.class)
                 .thenReturn(new ExtractedFields("Data Analyst", "Umbrella", "", "2 years", "remote"));
         llmScores(90);
 

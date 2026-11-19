@@ -60,8 +60,9 @@ public class JdIntakeAgent {
     /** LLM extraction of the five required fields. */
     @Action(clearBlackboard = true)
     public Stage parse(RawJd raw, OperationContext context) {
-        String prompt = "Extract these fields from the job description below, with an empty string for any "
-                + "field that isn't clearly mentioned: title, company, location, exp, workMode.\n\n"
+        // No field list here: the output type (ExtractedFields) tells Embabel what to ask the model for.
+        String prompt = "Extract the job posting details from the job description below. Use an empty string for "
+                + "anything it does not clearly mention.\n\n"
                 + "Job description:\n" + raw.text();
         ExtractedFields f = context.ai().withDefaultLlm().createObject(prompt, ExtractedFields.class);
 
