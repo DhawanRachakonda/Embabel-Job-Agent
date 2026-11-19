@@ -1,0 +1,6 @@
+spring:
+  main:
+    banner-mode: "off"
+embabel:
+  models:
+    default-llm: claude-sonnet-5-5
