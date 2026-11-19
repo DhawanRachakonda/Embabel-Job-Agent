@@ -16,7 +16,7 @@ rewrite(NeedsRewrite)   -> Scoring    (loop back to scoring)
 publish / reject / escalate -> JobOutcome   (the three goals)
 ```
 
-Which fields count as missing is declared with Jakarta Bean Validation: the `RequiredFields` record in `JdDomain` carries `@NotBlank` constraints, and `parse` validates it with the Spring `Validator` bean (the guide says Embabel supports Jakarta Bean Validation for domain constraints). The constraints are kept off `ExtractedFields`, the type the model fills, because a field the job description simply doesn't mention is a gap to ask about, not a malformed reply.
+Which fields count as missing is declared with Jakarta Bean Validation: the `RequiredFields` record in `JdDomain` carries `@NotBlank` constraints, and `RequiredFields.missing(validator)` (called from `parse`) validates it with the Spring `Validator` bean. The extraction prompt does not list the fields: `createObject(prompt, ExtractedFields.class)` lets the output type say what to extract, and `ExtractedFields.toRequiredFields()` hands the values to the constrained record (the guide says Embabel supports Jakarta Bean Validation for domain constraints). The constraints are kept off `ExtractedFields`, the type the model fills, because a field the job description simply doesn't mention is a gap to ask about, not a malformed reply.
 
 The `Stage` records in `JdDomain` are the states. Returning a different stage type is a branch; the same type is a loop. Rules (75 threshold, 2 rewrites, 6 questions) are plain Java inside the actions, not LLM decisions. State-transition actions use `clearBlackboard = true` so old states and consumed answers can't be picked up again.
 
